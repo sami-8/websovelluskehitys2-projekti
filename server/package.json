@@ -1,0 +1,24 @@
+{
+    "name": "ws2-server",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "dev": "nodemon ./src/index.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "express": "^4.17.1",
+        "knex": "^0.21.17",
+        "objection": "^2.2.14",
+        "sqlite3": "^5.0.2"
+    },
+    "devDependencies": {
+        "eslint": "^7.20.0",
+        "eslint-config-airbnb": "^18.2.1",
+        "eslint-plugin-import": "^2.22.1",
+        "nodemon": "^2.0.7"
+    }
+}
