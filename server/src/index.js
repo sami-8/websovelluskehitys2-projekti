@@ -2,6 +2,7 @@ const { Model } = require('objection');
 const Knex = require('knex');
 const express = require('express');
 const { nanoid } = require('nanoid');
+const cors = require('cors');
 const Paste = require('./models/Paste');
 
 const knex = Knex({
@@ -16,6 +17,7 @@ Model.knex(knex);
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 
 app.get('/api/pastes', async (req, res) => {
   const page = req.query.page || 0;

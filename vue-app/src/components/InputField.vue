@@ -6,16 +6,16 @@
         placeholder="Enter title here"
         rows="1"
         cols="80"></textarea><br>
-        <textarea v-model="message" 
+        <textarea v-model="message"
         placeholder="paste your text here"
         rows="30"
         cols="80"></textarea>
         <br>
-        <input type="checkbox" id="checkbox" v-model="unlisted">        
+        <input type="checkbox" id="checkbox" v-model="unlisted">
         <label for="checkbox">Unlisted</label>
         <br>
         <button v-on:click="sendPaste">Send</button>
-    </div>    
+    </div>
   </div>
 </template>
 
@@ -32,20 +32,20 @@ export default {
         message: [],
         combinedMsg: [],
         unlisted: false
-      }     
+      }
   },
   methods: {
-      sendPaste() {        
+      sendPaste() {
         axios({
         method: 'post',
-        url: 'localhost:3000/api/pastes',
+        url: 'http://localhost:3000/api/pastes',
         data: {
             title: this.title,
             content: this.message,
             unlisted: this.unlisted
         }
-        })        
-        .then(function (response) {                
+        })
+        .then(function (response) {
             console.log(response)
             this.title = "";
             this.message = "";
@@ -55,7 +55,7 @@ export default {
             console.log(error)
         });
       }
-  } 
+  }
 };
 </script>
 
