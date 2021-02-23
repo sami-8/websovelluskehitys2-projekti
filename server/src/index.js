@@ -1,6 +1,7 @@
 const { Model } = require('objection');
 const Knex = require('knex');
 const express = require('express');
+const { nanoid } = require('nanoid');
 const Paste = require('./models/Paste');
 
 const knex = Knex({
@@ -13,6 +14,8 @@ const knex = Knex({
 Model.knex(knex);
 
 const app = express();
+
+app.use(express.json());
 
 app.get('/api/pastes', async (req, res) => {
   const page = req.query.page || 0;
@@ -27,13 +30,31 @@ app.get('/api/pastes', async (req, res) => {
 
 app.get('/api/pastes/:id', async (req, res) => {
   const { id } = req.params;
+  const paste  = await Paste.query().findById(id);
 
-  const paste = await Paste.query().findById(id);
+  if (!paste) {
+    return res.status(404)
+      .json({ error: `Paste with id ${id} doesn't exist.` });
+  }
+
   return res.json(paste);
 });
 
-app.get('*', (req, res) => {
-  res.send('hello world');
+app.post('/api/pastes', async (req, res) => {
+  const title    = req.body.title;
+  const content  = req.body.content;
+  const unlisted = req.body.unlisted || false;
+
+  try {
+    const id = nanoid(10);
+
+    const newPaste = await Paste.query()
+      .insert({ id, title, content, unlisted });
+
+    return res.json(newPaste);
+  } catch (error) {
+    return res.json({ error: error.message });
+  }
 });
 
 const PORT = process.env.PORT || 3000;
