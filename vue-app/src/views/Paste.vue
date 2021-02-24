@@ -1,7 +1,7 @@
 <template>
   <div class="paste">
-    <h4 v-if="this.title"> {{ title }}</h4>    
-    <div v-if="this.message"> {{ message }}</div>
+    <h4 v-if="this.title">{{ title }}</h4>    
+    <pre v-if="this.message">{{ message }}</pre>
   </div>
 </template>
 <script>
@@ -35,4 +35,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.paste {
+    text-align: left;
+}
 </style>
