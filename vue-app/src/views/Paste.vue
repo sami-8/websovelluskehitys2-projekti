@@ -1,7 +1,7 @@
 <template>
   <div class="paste">
     <h4 v-if="this.title"> {{ title }}</h4>    
-    <p v-if="this.message"> {{ message }}</p>
+    <div v-if="this.message"> {{ message }}</div>
   </div>
 </template>
 <script>
@@ -14,10 +14,7 @@ export default {
   data() {
     return {      
       title: [],
-      message: [],
-      unlisted: false,
-      success: false,
-      id: []
+      message: []
     };
   },
   created: function () {      

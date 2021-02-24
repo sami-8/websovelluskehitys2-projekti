@@ -52,12 +52,8 @@ export default {
       })
         .then((response) => {
           console.log(response);
-          this.id = response.data.id;
-          this.title = "";
-          this.message = "";
-          this.unlisted = false;
-          this.success = true;
-          setTimeout(() => this.$router.push({ path: `/paste/${this.id}`}))          
+          this.id = response.data.id;          
+          this.$router.push({ path: `/paste/${this.id}`})         
         })
         .catch(function (error) {
           console.log(error);
