@@ -42,6 +42,19 @@ app.get('/api/pastes/:id', async (req, res) => {
   return res.json(paste);
 });
 
+app.get('/api/pastes/:id/raw', async (req, res) => {
+  const { id } = req.params;
+  const paste  = await Paste.query().findById(id);
+
+  if (!paste) {
+    return res.status(404)
+      .send(`Paste with id ${id} doesn't exist.`);
+  }
+
+  res.set('Content-Type', 'text/plain');
+  return res.send(paste.content);
+});
+
 app.post('/api/pastes', async (req, res) => {
   const title    = req.body.title;
   const content  = req.body.content;
