@@ -12,6 +12,7 @@ class Paste extends Model {
   $formatJson(json) {
     json = super.$formatJson(json);
     delete json.unlisted;
+    delete json.delpassword;
     return json;
   }
 }

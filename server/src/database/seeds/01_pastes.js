@@ -1,23 +1,25 @@
 const { nanoid } = require('nanoid');
+const bcrypt = require('bcrypt');
 
 exports.seed = function (knex) {
   return knex('pastes').del()
     .then(() => {
       const pastes = [
         {
-          title: 'title 1',
+          title: 'paste1',
           content: 'content 1',
           unlisted: false,
         },
         {
-          title: 'title 2',
+          title: 'paste2',
           content: 'content 2',
           unlisted: false,
         },
         {
-          title: 'title 3',
+          title: 'paste3',
           content: 'content 3',
           unlisted: false,
+          delpassword: bcrypt.hashSync('paste3', 10),
         },
       ];
 
