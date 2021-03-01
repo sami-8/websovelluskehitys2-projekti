@@ -1,4 +1,4 @@
-const { Model } = require('objection');
+const { Model, raw } = require('objection');
 const Knex = require('knex');
 const express = require('express');
 const { nanoid } = require('nanoid');
@@ -34,6 +34,15 @@ app.get('/api/pastes', async (req, res) => {
     .page(page, size);
 
   return res.json({ pastes });
+});
+
+app.get('/api/pastes/random', async (req, res) => {
+  const paste = await Paste.query()
+    .where({ unlisted: false })
+    .orderBy(raw('RANDOM()'))
+    .limit(1);
+
+  return res.json(paste);
 });
 
 app.get('/api/pastes/:id', async (req, res) => {
