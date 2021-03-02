@@ -8,7 +8,7 @@
     ></textarea
     ><br />
     <textarea
-      v-model="message"
+      v-model="content"
       placeholder="paste your text here"
       rows="30"
       cols="80"
@@ -16,10 +16,19 @@
     <br />
     <input type="checkbox" id="checkbox" v-model="unlisted" />
     <label for="checkbox">unlisted</label>
+    <br />
+    <input type="checkbox" id="checkbox2" v-model="setPasswd" />
+    <label for="checkbox2">set delete password</label>
+    <br />
+    <textarea
+      v-if="setPasswd"
+      v-model="passwd"
+      rows="1"
+      cols="20"
+      placeholder="password?"
+    />
     <br /><br />
     <button v-on:click="sendPaste">Send</button>
-    <br />
-    <p v-if="success">Saved</p>
   </div>
 </template>
 
@@ -33,27 +42,31 @@ export default {
   data() {
     return {
       title: [],
-      message: [],
+      content: [],
+      data: [],
       unlisted: false,
-      success: false,
-      id: []
+      setPasswd: false,
+      passwd: "",
+      id: [],
     };
   },
   methods: {
     sendPaste() {
+      this.data = {
+        title: this.title,
+        content: this.content,
+        unlisted: this.unlisted,
+        delpassword: this.passwd,
+      };
       axios({
         method: "post",
         url: "http://localhost:3000/api/pastes",
-        data: {
-          title: this.title,
-          content: this.message,
-          unlisted: this.unlisted,
-        },
+        data: this.data,
       })
         .then((response) => {
           console.log(response);
-          this.id = response.data.id;          
-          this.$router.push({ path: `/paste/${this.id}`})         
+          this.id = response.data.id;
+          this.$router.push({ path: `/paste/${this.id}` });
         })
         .catch(function (error) {
           console.log(error);

@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">New paste</router-link> |
-      <router-link to="/browse">Browse</router-link>
+      <a href="/">New paste</a> |
+      <a href="/random">Random</a>
     </div>
     <router-view/>
   </div>
