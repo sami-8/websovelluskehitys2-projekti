@@ -1,7 +1,5 @@
 <template>
   <div class="paste">
-    <h4 v-if="this.title">{{ title }}</h4>    
-    <pre v-if="this.message">{{ message }}</pre>
   </div>
 </template>
 <script>
@@ -12,9 +10,7 @@ export default {
     msg: String,
   },
   data() {
-    return {      
-      title: [],
-      message: []
+    return {           
     };
   },
   created: function () {      
@@ -23,8 +19,7 @@ export default {
           url: "http://localhost:3000/api/pastes/random"               
       })
       .then((response) => {                              
-          this.title = response.data[0].title;
-          this.message = response.data[0].content;                    
+          this.$router.push({ path: `/paste/${response.data[0].id}` });                
       })
       .catch(function (error) {
           console.log(error);
