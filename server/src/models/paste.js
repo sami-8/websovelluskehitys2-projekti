@@ -9,6 +9,10 @@ class Paste extends Model {
     return 'id';
   }
 
+  static async count() {
+    return (await this.query().count())[0]['count(*)'];
+  }
+
   $formatJson(json) {
     json = super.$formatJson(json);
     delete json.unlisted;

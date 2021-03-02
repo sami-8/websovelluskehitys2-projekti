@@ -1,9 +1,21 @@
 module.exports = {
+  test: {
+    client: 'sqlite3',
+    useNullAsDefault: true,
+    connection: ':memory:',
+    migrations: {
+      tableName: 'migrations',
+      directory: 'src/database/migrations',
+    },
+    seeds: {
+      directory: 'src/database/seeds',
+    },
+  },
   development: {
     client: 'sqlite3',
     useNullAsDefault: true,
     connection: {
-      filename: './sqlite.db',
+      filename: './dev-sqlite.db',
     },
     migrations: {
       tableName: 'migrations',
