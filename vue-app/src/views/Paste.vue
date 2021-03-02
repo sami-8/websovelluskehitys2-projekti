@@ -78,6 +78,9 @@ export default {
         .catch(function (error) {
           self.noError = false;
           self.messg = error.response.data.error;
+          setTimeout(function () {
+            self.noError = true;
+          }, 1000);          
         });
       this.delPassword = "";
     },
