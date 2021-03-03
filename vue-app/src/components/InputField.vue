@@ -52,6 +52,9 @@ export default {
   },
   methods: {
     sendPaste() {
+      if (this.title == "" && this.content == "") {
+        return;
+      }
       this.data = {
         title: this.title,
         content: this.content,
@@ -78,4 +81,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.hello {
+  padding: 10px;
+}
 </style>

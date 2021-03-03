@@ -2,7 +2,7 @@
   <div class="paste">
     <div v-if="noError">
       <a
-        id="raw"
+        class="smallText"
         v-bind:href="
           'http://localhost:3000/api/pastes/' + this.$route.params.id + '/raw'
         "
@@ -15,6 +15,7 @@
         cols="21"
       /><br />
       <button v-on:click="deletePaste">Delete</button>
+      <p class="smallText" v-if="delError"> {{ delErr }}</p>
       <h4 v-if="this.title">{{ title }}</h4>
       <pre v-if="this.content">{{ content }}</pre>
     </div>
@@ -34,10 +35,12 @@ export default {
     return {
       title: "",
       content: "",
+      delErr: "",
       delPassword: [],
       authorizationToken: [],
       messg: "",
       message: false,
+      delError: false,
       noError: false,
     };
   },
@@ -76,10 +79,10 @@ export default {
           }, 1000);
         })
         .catch(function (error) {
-          self.noError = false;
-          self.messg = error.response.data.error;
+          self.delError = true;
+          self.delErr = error.response.data.error;
           setTimeout(function () {
-            self.noError = true;
+            self.delError = false;
           }, 1000);          
         });
       this.delPassword = "";
@@ -95,12 +98,15 @@ export default {
 <style scoped>
 .paste {
   text-align: left;
-  padding: 5px;
+  padding-top: 20px;
+  padding-left: 80px;
+  padding-right: 80px;
+  padding-bottom: 80px;
 }
 #error {
   text-align: center;
 }
-#raw {
+.smallText {
   font-size: 80%;
 }
 </style>
