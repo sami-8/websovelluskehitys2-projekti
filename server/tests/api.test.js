@@ -126,6 +126,36 @@ describe('DELETE-request to /api/pastes/:id', () => {
     expect(countAfter).toEqual(countBefore);
     expect(pasteInDbAfter).toBeDefined();
   });
+
+  test('delpassword is required', async () => {
+    const res = await api.post('/api/pastes')
+      .send({ title: 't', content: 'c', delpassword: '123' });
+    const { id } = res.body;
+    const pasteInDbBefore = await Paste.query().findById(id);
+    expect(pasteInDbBefore).toBeDefined();
+
+    await api.delete(`/api/pastes/${id}`)
+      .send({})
+      .expect(400);
+  });
+
+  test('delpassword should be a string', async () => {
+    const res = await api.post('/api/pastes')
+      .send({ title: 't', content: 'c', delpassword: '123' });
+    const { id } = res.body;
+    const pasteInDbBefore = await Paste.query().findById(id);
+    expect(pasteInDbBefore).toBeDefined();
+
+    await api.delete(`/api/pastes/${id}`)
+      .send({ delpassword: null })
+      .expect(400);
+    await api.delete(`/api/pastes/${id}`)
+      .send({ delpassword: true })
+      .expect(400);
+    await api.delete(`/api/pastes/${id}`)
+      .send({ delpassword: 123 })
+      .expect(400);
+  });
 });
 
 afterAll(async () => {

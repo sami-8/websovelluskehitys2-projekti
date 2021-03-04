@@ -63,6 +63,7 @@ router.get('/:id/raw', async (req, res) => {
 
 router.delete('/:id',
   check('delpassword', 'delpassword missing.').exists(),
+  check('delpassword', 'delpassword should be a string.').isString(),
   validationErrorHandler,
   async (req, res, next) => {
     const { id } = req.params;
