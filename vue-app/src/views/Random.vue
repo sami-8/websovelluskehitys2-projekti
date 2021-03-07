@@ -10,21 +10,21 @@ export default {
     msg: String,
   },
   data() {
-    return {           
+    return {
     };
   },
-  created: function () {      
+  created: function () {
       axios({
           method: "get",
-          url: "http://localhost:3000/api/pastes/random"               
+          url: "/api/pastes/random"
       })
-      .then((response) => {                              
-          this.$router.push({ path: `/paste/${response.data[0].id}` });                
+      .then((response) => {
+          this.$router.push({ path: `/paste/${response.data[0].id}` });
       })
       .catch(function (error) {
           console.log(error);
       });
-  }  
+  }
 };
 </script>
 

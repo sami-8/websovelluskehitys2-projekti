@@ -63,7 +63,7 @@ export default {
       };
       axios({
         method: "post",
-        url: "http://localhost:3000/api/pastes",
+        url: "/api/pastes",
         data: this.data,
       })
         .then((response) => {

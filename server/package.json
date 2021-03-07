@@ -4,8 +4,10 @@
     "description": "",
     "main": "index.js",
     "scripts": {
+        "start": "NODE_ENV=production node ./src/index.js",
         "dev": "NODE_ENV=development nodemon ./src/index.js",
-        "test": "NODE_ENV=test jest --silent --verbose"
+        "test": "NODE_ENV=test jest --silent --verbose",
+        "build-vue": "rm -rv dist && cd ../vue-app && npm run build && mv -v dist ../server"
     },
     "author": "",
     "license": "ISC",
@@ -18,7 +20,8 @@
         "morgan": "^1.10.0",
         "nanoid": "^3.1.20",
         "objection": "^2.2.14",
-        "sqlite3": "^5.0.2"
+        "sqlite3": "^5.0.2",
+        "swagger-ui-express": "^4.1.6"
     },
     "devDependencies": {
         "eslint": "^7.20.0",

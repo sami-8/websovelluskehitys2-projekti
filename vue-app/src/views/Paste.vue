@@ -4,7 +4,7 @@
       <a
         class="smallText"
         v-bind:href="
-          'http://localhost:3000/api/pastes/' + this.$route.params.id + '/raw'
+          '/api/pastes/' + this.$route.params.id + '/raw'
         "
         >raw text</a
       ><br />
@@ -48,7 +48,7 @@ export default {
     var self = this;
     axios({
       method: "get",
-      url: "http://localhost:3000/api/pastes/" + this.$route.params.id,
+      url: "/api/pastes/" + this.$route.params.id,
     })
       .then((response) => {
         console.log(response);
@@ -65,7 +65,7 @@ export default {
     deletePaste() {
       var self = this;
       axios
-        .delete("http://localhost:3000/api/pastes/" + this.$route.params.id, {
+        .delete("/api/pastes/" + this.$route.params.id, {
           data: {
             delpassword: this.delPassword,
           },
@@ -83,7 +83,7 @@ export default {
           self.delErr = error.response.data.error;
           setTimeout(function () {
             self.delError = false;
-          }, 1000);          
+          }, 1000);
         });
       this.delPassword = "";
     },

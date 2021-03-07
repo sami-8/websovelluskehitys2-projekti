@@ -23,13 +23,22 @@ function validationErrorHandler(req, res, next) {
 function errorHandler(err, req, res, _next) {
   req.error = err;
 
-  if (err instanceof HttpStatusError) {
+  if (err.name === 'HttpStatusError') {
     const { message, status, details } = err;
 
     return res.status(status)
       .json({ error: message, status, details });
   }
+  if (err.name === 'PayloadTooLargeError') {
+    const { message, expected, length, limit } = err;
 
+    return res.status(400)
+      .json({
+        error: message,
+        status: 400,
+        details: { expected, length, limit },
+      });
+  }
   return res.status(500).json({
     error: 'Unexpected error occurred.',
     status: 500,
@@ -59,8 +68,11 @@ function requestLogger() {
 
   morgan.token('error',
     (req, _res) => {
-      return req.error
-        ? `\nerror: ${JSON.stringify({ ...req.error }, null, 4)}`
+      const { error } = req;
+      return error
+        ? `\n${error.name} ${
+          JSON.stringify({ message: error.message, ...error },
+            null, 4)}`
         : '';
     });
 

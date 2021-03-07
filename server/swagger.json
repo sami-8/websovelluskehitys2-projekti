@@ -1,0 +1,221 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Pastes API",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/api/pastes": {
+            "get": {
+                "tags": ["pastes"],
+                "summary": "Get a page of pastes",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "default": 0,
+                        "description": "page number",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "size",
+                        "in": "query",
+                        "default": 10,
+                        "description": "how many pastes per page",
+                        "required": false,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "a page of pastes",
+                        "schema": {
+                            "$ref": "#/definitions/Pastes"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": ["pastes"],
+                "summary": "Create a new paste",
+                "parameters": [
+                    {
+                        "schema": {
+                            "$ref": "#/definitions/NewPaste"
+                        },
+                        "name": "new paste",
+                        "in": "body",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "the new paste",
+                        "schema": {
+                            "$ref": "#/definitions/Paste"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/pastes/random": {
+            "get": {
+                "tags": ["pastes"],
+                "summary": "Get a random paste",
+                "responses": {
+                    "200": {
+                        "description": "random paste",
+                        "schema": {
+                            "$ref": "#/definitions/Paste"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/pastes/{id}": {
+            "get": {
+                "tags": ["pastes"],
+                "summary": "Get a paste with given id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "string",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "the paste with given id",
+                        "schema": {
+                            "$ref": "#/definitions/Paste"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["pastes"],
+                "summary": "Delete a paste with given id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "string",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "schema": {
+                            "$ref": "#/definitions/DeletePaste"
+                        },
+                        "name": "password for deletion",
+                        "in": "body",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Paste was deleted successfully"
+                    }
+                }
+            }
+        },
+        "/api/pastes/{id}/raw": {
+            "get": {
+                "tags": ["pastes"],
+                "summary": "Get a paste with given id as text/plain",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "string",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "the paste with given id"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Paste": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "string"
+                }
+            }
+        },
+        "NewPaste": {
+            "type": "object",
+            "required": ["title", "content"],
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "unlisted": {
+                    "type": "boolean"
+                },
+                "delpassword": {
+                    "type": "string"
+                }
+            }
+        },
+        "DeletePaste": {
+            "type": "object",
+            "required": ["delpassword"],
+            "properties": {
+                "delpassword": {
+                    "type": "string"
+                }
+            }
+        },
+        "Pastes": {
+            "type": "object",
+            "properties": {
+                "pastes": {
+                    "$ref": "#/definitions/PastePage"
+                }
+            }
+        },
+        "PastePage": {
+            "type": "object",
+            "properties": {
+                "results": {
+                    "$ref": "#/definitions/PasteResults"
+                },
+                "total":{
+                    "type": "number"
+                }
+            }
+        },
+        "PasteResults": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/Paste"
+            }
+        }
+    }
+}
