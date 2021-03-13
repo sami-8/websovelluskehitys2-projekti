@@ -12,14 +12,21 @@ beforeAll(async () => {
 describe('GET-request to /api/pastes', () => {
   test('optional query parameter "page" has to be an integer', async () => {
     await api.get('/api/pastes?page=0').expect(200);
-    await api.get('/api/pastes?page=1.23').expect(400);
-    await api.get('/api/pastes?page=abc').expect(400);
+    await api
+      .get('/api/pastes?page=1.23')
+      .expect(400)
+      .expectErrorMessage('Validation failed.');
+    await api.get('/api/pastes?page=abc')
+      .expect(400)
+      .expectErrorMessage('Validation failed.');
   });
 
   test('optional query parameter "size" has to be an integer', async () => {
     await api.get('/api/pastes?size=0').expect(200);
-    await api.get('/api/pastes?size=1.23').expect(400);
-    await api.get('/api/pastes?size=abc').expect(400);
+    await api.get('/api/pastes?size=1.23').expect(400)
+      .expectValidationErrorMessage('size should be an integer');
+    await api.get('/api/pastes?size=abc').expect(400)
+      .expectValidationErrorMessage('size should be an integer');
   });
 
   test('by default returns 10 pastes from page 0', async () => {
@@ -76,13 +83,17 @@ describe('POST-request to /api/pastes', () => {
 
   test('title and content are required and must be strings', async () => {
     await api.post('/api/pastes')
-      .send({ content: 'content' }).expect(400);
+      .send({ content: 'content' }).expect(400)
+      .expectValidationErrorMessage('title is required');
     await api.post('/api/pastes')
-      .send({ title: 'title' }).expect(400);
+      .send({ title: 'title' }).expect(400)
+      .expectValidationErrorMessage('content is required');
     await api.post('/api/pastes')
-      .send({ title: 123, content: 'content' }).expect(400);
+      .send({ title: 123, content: 'content' }).expect(400)
+      .expectValidationErrorMessage('title should be a string');
     await api.post('/api/pastes')
-      .send({ title: 'title', content: 123 }).expect(400);
+      .send({ title: 'title', content: 123 }).expect(400)
+      .expectValidationErrorMessage('content should be a string');
   });
 });
 
@@ -118,7 +129,10 @@ describe('DELETE-request to /api/pastes/:id', () => {
 
     await api.delete(`/api/pastes/${id}`)
       .send({ delpassword: 'incorrect' })
-      .expect(403);
+      .expect(403)
+      .expectErrorMessage(
+        'Wrong password or the paste cannot be deleted.',
+      );
 
     const countAfter = await Paste.count();
     const pasteInDbAfter = await Paste.query().findById(id);
@@ -136,7 +150,10 @@ describe('DELETE-request to /api/pastes/:id', () => {
 
     await api.delete(`/api/pastes/${id}`)
       .send({})
-      .expect(400);
+      .expect(400)
+      .expectValidationErrorMessage(
+        'delpassword missing.',
+      );
   });
 
   test('delpassword should be a string', async () => {
@@ -148,13 +165,22 @@ describe('DELETE-request to /api/pastes/:id', () => {
 
     await api.delete(`/api/pastes/${id}`)
       .send({ delpassword: null })
-      .expect(400);
+      .expect(400)
+      .expectValidationErrorMessage(
+        'delpassword should be a string.',
+      );
     await api.delete(`/api/pastes/${id}`)
       .send({ delpassword: true })
-      .expect(400);
+      .expect(400)
+      .expectValidationErrorMessage(
+        'delpassword should be a string.',
+      );
     await api.delete(`/api/pastes/${id}`)
       .send({ delpassword: 123 })
-      .expect(400);
+      .expect(400)
+      .expectValidationErrorMessage(
+        'delpassword should be a string.',
+      );
   });
 });
 

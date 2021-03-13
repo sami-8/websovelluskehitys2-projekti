@@ -7,7 +7,7 @@
         "start": "NODE_ENV=production node ./src/index.js",
         "dev": "NODE_ENV=development nodemon ./src/index.js",
         "test": "NODE_ENV=test jest --silent --verbose",
-        "build-vue": "rm -rv dist && cd ../vue-app && npm run build && mv -v dist ../server"
+        "build-vue": "[ ! -d ./dist ] || rm -rv dist && cd ../vue-app && npm run build || (npm i && npm run build) && mv -v dist ../server"
     },
     "author": "",
     "license": "ISC",
@@ -33,6 +33,7 @@
         "supertest": "^6.1.3"
     },
     "jest": {
-        "testEnvironment": "node"
+        "testEnvironment": "node",
+        "setupFiles": ["./tests/supertest-extensions.js"]
     }
 }
